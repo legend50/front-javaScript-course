@@ -37,10 +37,35 @@
 
 4) Потренироваться и переписать цикл еще двумя способами*/
 
+/* Задание на урок 18:
+
+1) Первую часть задания повторить по уроку
+
+2) Создать функцию showMyDB, которая будет проверять свойство privat. Если стоит в позиции
+false - выводит в консоль главный объект программы
+
+3) Создать функцию writeYourGenres в которой пользователь будет 3 раза отвечать на вопрос 
+"Ваш любимый жанр под номером ${номер по порядку}". Каждый ответ записывается в массив данных
+genres
+
+P.S. Функции вызывать не обязательно*/
+
 /*jslint node: true */
 'use strict';
 
-let numberOfFilms = +prompt("Сколько фильмов вы уже посмотрели?", "");
+let numberOfFilms;
+
+function start() {
+    numberOfFilms = prompt("Сколько фильмов вы уже посмотрели?", "");
+
+    while (numberOfFilms == "" || 
+        numberOfFilms == null || 
+        isNaN(numberOfFilms)) {
+        numberOfFilms = prompt("Сколько фильмов вы уже посмотрели?", "");
+    }
+}
+
+start();
 
 let personalMovieDB = {
     count: numberOfFilms,
@@ -50,30 +75,49 @@ let personalMovieDB = {
     privat: false
 };
 
-let lastWatchfilm = "";
-let lastWatchfilmGrade;
+function rememberMyfilm() {
+    let lastWatchfilm;
+    let lastWatchfilmGrade;
 
-for (let i = 0; i < 2; i++){
-    do {lastWatchfilm = prompt("Один из последних просмотренных фильмов?", "");
-        lastWatchfilmGrade = +prompt("На сколько оцените его?", "");
-    } while(lastWatchfilm == null ||
-        lastWatchfilm.length > 50 ||
-        lastWatchfilm.length <= 0 ||
-        lastWatchfilmGrade.length == "" );
-    
-    personalMovieDB.movies[lastWatchfilm] = lastWatchfilmGrade;
+    for (let i = 0; i < 2; i++){
+        do {lastWatchfilm = prompt("Один из последних просмотренных фильмов?", "");
+            lastWatchfilmGrade = +prompt("На сколько оцените его?", "");
+        } while(lastWatchfilm == null ||
+            lastWatchfilm.length > 50 ||
+            lastWatchfilm.length <= 0 ||
+            lastWatchfilmGrade.length == "" );
+        
+        personalMovieDB.movies[lastWatchfilm] = lastWatchfilmGrade;
+    }
 }
 
-if (personalMovieDB.count < 10) {
-    alert("Просмотрено довольно мало фильмов");
-} else if (personalMovieDB.count >= 10 && personalMovieDB.count < 30){
-    alert("Вы классический зритель");
-} else if (personalMovieDB.count >= 30) {
-    alert("Вы киноман");
-} else {
-    alert("Произошла ошибка");
+function detectPersonalLevel() {
+    if (personalMovieDB.count < 10) {
+        alert("Просмотрено довольно мало фильмов");
+    } else if (personalMovieDB.count >= 10 && personalMovieDB.count < 30){
+        alert("Вы классический зритель");
+    } else if (personalMovieDB.count >= 30) {
+        alert("Вы киноман");
+    } else {
+        alert("Произошла ошибка");
+    }
 }
 
-console.log(personalMovieDB);
+function showMyDB(hidden) {
+    if (!hidden) {
+        console.log(personalMovieDB);
+    }
+}
 
+function writeYourGenres() {
+    for (let i = 1; i <= 3; i++) {
+        personalMovieDB.genres[i - 1] = prompt(`Ваш любимый жанр под номером ${i}`, "");
+    }
+}
+
+
+rememberMyfilm();
+detectPersonalLevel();
+writeYourGenres();
+showMyDB(personalMovieDB.privat);
 
